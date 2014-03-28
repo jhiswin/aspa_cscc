@@ -1135,4 +1135,12 @@
 	</ast>
   </method>
 
+  <method name="unescape" type="DSTRING">
+  	<args />
+	<ast name="METHOD_CALL" text="unescape">
+		<ast name="ARGLIST_VALUES">
+			<args />
+		</ast>
+	</ast>
+  </method>
 </functions>
