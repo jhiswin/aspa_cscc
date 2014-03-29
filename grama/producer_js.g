@@ -33,18 +33,14 @@ options {
 
 generate
   :
-  (HTML <html> |
-  <script_begin> statements <script_end>)*
+  (statement)* <end>
   ;
 
-statements
-  :
-  (statement)+
-  ;
 
 statement
   :
   expr <expr_end>
+  | HTML <html>
   | INCLUDE <include>
   | #(EQ_HTML <eq_html> expr) <eq_html_end>
   | #(BREAK (num:NUM_INT)?) <break>

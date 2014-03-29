@@ -22,6 +22,7 @@ import antlr.Token;
 import antlr.TokenStream;
 import antlr.TokenStreamException;
 import antlr.TokenStreamSelector;
+import antlr.collections.Stack;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -50,7 +51,7 @@ public class AspStreamSelector extends TokenStreamSelector {
     private File currentFile;
     private FileInputStream fis;
     private BufferedReader bis;
-    private List<Token> storedTokens = new ArrayList<Token>();
+    private List storedTokens = new ArrayList();
     private HtmlLexerUtil utility = new HtmlLexerUtil();
     private HtmlLexer htmlLexer;
     private VbsLexer vbsLexer;
@@ -141,12 +142,15 @@ public class AspStreamSelector extends TokenStreamSelector {
         	result = next;
         	break;
 		default:
-            if ( lexerType == LEX_VB && next.getType() == VbsTokenTypes.ASSIGN
-            	|| lexerType == LEX_JS && next.getType() == JsTokenTypes.ASSIGN ) {
+            boolean isEq =
+            (lexerType == LEX_VB && next.getType() == VbsTokenTypes.ASSIGN)
+            || (lexerType == LEX_JS && next.getType() == JsTokenTypes.ASSIGN);
+            if (isEq) {
                 int typeEQ_HTML = lexerType == LEX_JS
-                		? JsTokenTypes.EQ_HTML
-                		: VbsTokenTypes.EQ_HTML;
-                result = createToken(typeEQ_HTML, "=", next.getLine(), next.getColumn());
+                ? JsTokenTypes.EQ_HTML
+                : VbsTokenTypes.EQ_HTML;
+                result = createToken(typeEQ_HTML, "=",
+                next.getLine(), next.getColumn());
             } else {
                 result = next;
             }
@@ -239,29 +243,32 @@ public class AspStreamSelector extends TokenStreamSelector {
 	            case HtmlLexerUtil.JS_START:
 	                pushScriptLexer(HtmlLexerUtil.JS_START);
 	                if (initialLexerType != LEX_JS && vbsLexer != null) {
-	                    result = createToken(Token.EOF_TYPE, null, t.getLine(), t.getColumn());
+	                    result = createToken(Token.EOF_TYPE, null, t.getLine(),
+	                    t.getColumn());
 	                } else {
-	                    result = createToken(JsTokenTypes.NEW_LINE, null, t.getLine(),t.getColumn());
+	                    result = createToken(JsTokenTypes.NEW_LINE,
+	                    null, t.getLine(),t.getColumn());
 	                }
 	                break;
 	            case HtmlLexerUtil.VBS_START:
 	                pushScriptLexer(HtmlLexerUtil.VBS_START);
 	                if (initialLexerType != LEX_VB && jsLexer != null) {
-	                    result = createToken(Token.EOF_TYPE, null, t.getLine(), t.getColumn());
+	                    result = createToken(Token.EOF_TYPE, null, t.getLine(),
+	                    		t.getColumn());
 	                } else {
 	                    result = createToken(VbsTokenTypes.STATEMENT_END,
-	                    		null, htmlLexer.getLine(), htmlLexer.getColumn());
+	                    null, t.getLine(),t.getColumn());
 	                }
 	                break;
 	            case HtmlLexerUtil.INCLUDE:
-	                HtmlLexerUtil.InputInfo include = utility.getLastInclude();
-	                File dir = HtmlLexerUtil.TYPE_FILE == include.type
+	                Object[] include = utility.getLastInclude();
+	                File dir = HtmlLexerUtil.TYPE_FILE.equals(include[0])
 	                		? currentFile.getParentFile()
                				: baseDir;
-	                File included = getFile(dir, include.location);
+	                File included = getFile(dir, include[1].toString());
 	                result = createToken(
 	                		pageLanguage == LEX_JS ? JsTokenTypes.INCLUDE : VbsTokenTypes.INCLUDE,
-	                		included == null ? include.location : included.getAbsolutePath(), 
+	                		included == null ? include[1].toString() : included.getAbsolutePath(), 
 	                		t.getColumn(), t.getLine());
 	                break;
 	            case Token.EOF_TYPE:
@@ -320,21 +327,22 @@ public class AspStreamSelector extends TokenStreamSelector {
         return result;
     }
 
-    /** Depending on the current lexer type switch getting of tokens.
-     * @return The next token depending on the currently active lexer.
-     * @throws TokenStreamException
-     */
+
     private Token getNextToken() throws TokenStreamException {
+        Token result = null;
         switch (lexerType) {
             case LEX_HTML:
-            	return processHTML();
+                result = processHTML();
+                break;
             case LEX_JS:
             case LEX_VB:
-            	return processJsVb(null);
+                result = processJsVb(null);
+                break;
             default:
                 //should never happen
                 throw new RuntimeException("Unknown lexer type");
         }
+        return result;
     }
 
 

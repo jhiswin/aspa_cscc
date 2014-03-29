@@ -29,6 +29,7 @@ import java.io.StringWriter;
 public class SourceBuffer {
     private PrintWriter out;
     private boolean inCode;
+    private boolean emitPhp;
     private boolean lastWasLF;
     private int nestedLevel;
     private PrintWriter oldWriter;
@@ -37,17 +38,22 @@ public class SourceBuffer {
     private static String IDENTATION_UNIT = "  ";
 
 
-    public void startCode() {
+    private void printStartCode() {
+        out.println(emitPhp ? "<?php" : "<script type=\"text/javascript\">");
         inCode = true;
-        nestedLevel = 0;
     }
 
-    public void endCode() {
+
+    private void printEndCode() {
+        out.println(emitPhp ? "?>" : "</script>");
         inCode = false;
     }
 
 
     private void printIdent() {
+        if (!inCode) {
+            printStartCode();
+        }
         if (lastWasLF) {
             StringBuffer sb = new StringBuffer();
             for (int i = 0; i < nestedLevel; i++) {
@@ -65,7 +71,14 @@ public class SourceBuffer {
 	 */
 	public SourceBuffer(PrintWriter ps) {
         this.out = ps;
+        this.emitPhp = true;
     }
+
+	public SourceBuffer(PrintWriter ps, boolean php) {
+        this.out = ps;
+        this.emitPhp = php;
+    }
+
 
     public void startBuffering() {
         if (oldWriter == null) {
@@ -132,6 +145,15 @@ public class SourceBuffer {
         lastWasLF = true;
     }
 
+
+    public void printHTML(String s) {
+        if (inCode) {
+            printEndCode();
+        }
+        out.print(s);
+    }
+
+
     public void incLevel() {
         nestedLevel++;
     }
@@ -141,7 +163,15 @@ public class SourceBuffer {
         nestedLevel--;
     }
 
+
     public int getLevel() {
         return nestedLevel;
+    }
+
+
+    public void end() {
+        if (inCode) {
+            printEndCode();
+        }
     }
 }

@@ -26,7 +26,7 @@ import java.util.HashSet;
    	protected static Logger LOG = Logger.getLogger(VbsPhpGenerator.class);
    
 	public void setWriter(Writer writer) {
-		out = new SourceBuffer(new PrintWriter(writer));
+		out = new SourceBuffer(new PrintWriter(writer), true);
    	}
    	
     public static final int OBJECT = CommonConstants.OBJECT;
@@ -113,8 +113,9 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
 @arg_end : { out.print(')'); }
 
 @html : {
-    out.print(#HTML.getText());
+    out.printHTML(#HTML.getText());
 }
+
 
 @include : {
     out.println("require '" + #INCLUDE.getText() + "';");
@@ -273,15 +274,7 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
     out.println("var " + #IDENTIFIER.getText() + ";");
     ids.add(#IDENTIFIER.getText());
 }
-
-@script_begin : {
-	out.println("<?php");
-	out.startCode();
-}
-@script_end : { 
-	out.println("?>");
-	out.endCode();
-}
+@end : { out.end();}
 
 @CCobject_ret : { ; }
 

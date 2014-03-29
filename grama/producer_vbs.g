@@ -31,23 +31,23 @@ options {
 <init>
 
 generate
-	:
-	(HTML <html>
-	| (<script_begin> statements <script_end>))*
-	;
+  :
+  statements <end>
+  ;
 
-  	
+
 statements
-	:
-	(statement)+
-	;
-	
+  :
+  (HTML <html> | statement)*
+  ;
+
+
 function
   :
   #(FUNCTION <function>
       (#(ARGLIST <arglist_init> (BYREF <byref> | IDENTIFIER <arg_id>)+))?
       <arglist_end>
-      (#(GLOBALS <glob_init> (IDENTIFIER <id_glob>)+))? <func_end> (statements)?
+      (#(GLOBALS <glob_init> (IDENTIFIER <id_glob>)+))? <func_end> statements
   )
   ;
 
@@ -55,40 +55,34 @@ function
 nested
   :
   #(IF_ELSE
-      #(IF <if> expr <if_expr> (statements)?)
-      (#(ELSEIF <elseif> expr <elseif_expr> (statements)?))*
-      (#(ELSE <else> (statements)?))?
+      #(IF <if> expr <if_expr> statements)
+      (#(ELSEIF <elseif> expr <elseif_expr> statements))*
+      (#(ELSE <else> statements))?
   )
-  | #(WHILE <while> expr <while_expr> (statements)?)
+  | #(WHILE <while> expr <while_expr> statements)
   | function
   | #(SELECT <switch> expr <switch_end>
       (select_case)*
-      (#(CASE_ELSE <default> (statements)? <case_end>))?
+      (#(CASE_ELSE <default> statements <case_end>))?
     )
   | #(FOR #(FOR_INIT <finit>
           expr <fexpr1>
           expr <fexpr1>
           expr <fexpr3>)
-      (statements)?
+      statements
   )
   | #(FOR_EACH <foreach> #(FOR_INIT expr <foreach_expr>
-          expr <foreach_end>) (statements)?
+          expr <foreach_end>) statements
   )
   | #(CLASS <class> (IDENTIFIER <cid> | function <nested_end>)* <class_end>)
   ;
 
 
-select_case
-  :
-  #(CASE <case> expr <case_expr_end>
-       (statements)? <case_end>)
-  ;
-
 statement
   :
   INCLUDE <include>
   | #(EQ_HTML <eq_html> expr)
-  | #(DO <do> (statements)? #(DO_END <do_end> expr <do_expr>))
+  | #(DO <do> statements #(DO_END <do_end> expr <do_expr>))
   | nested <nested_end>
   | BREAK <break>
   | CONTINUE <continue>
@@ -98,7 +92,14 @@ statement
   | #(VAR <var_decl> (<next_var> expr)+) <exp_end>
   | #(CONST <const_decl> (<next_const> expr)+) <exp_end>
   ;
-  
+
+select_case
+  :
+  #(CASE <case> expr <case_expr_end>
+       statements <case_end>)
+  ;
+
+
 expr
   :
   #(EXPR expression)
@@ -167,7 +168,6 @@ expression
   | INVALID_OBJECT <inv_obj>
   | CONSTANT <const>
   | EMBEDDED_ASP <embedded_asp>
-  | EMPTYARG
   ;
   exception // for rule
   catch [NoViableAltException ex] {
