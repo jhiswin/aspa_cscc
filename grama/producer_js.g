@@ -33,9 +33,8 @@ options {
 
 generate
   :
-  (HTML <html>
-  | SCRIPT <script> // This is the script include.
-  | <script_begin> statements <script_end>)*
+  (HTML <html> |
+  <script_begin> statements <script_end>)*
   ;
 
 statements
@@ -47,6 +46,7 @@ statement
   :
   expr <expr_end>
   | INCLUDE <include>
+  | SCRIPT <script>
   | #(EQ_HTML <eq_html> expr) <eq_html_end>
   | #(BREAK (num:NUM_INT)?) <break>
   | #(CONTINUE (cnum:NUM_INT)?) <continue>
