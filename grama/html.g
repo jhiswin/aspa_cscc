@@ -38,7 +38,7 @@ TAG
   :
   '<'
   (
-      { (util.serverSideIncludesAllowed()) }? "!" (
+      { (!ignoreServerSide) }? "!" (
               "--"
               ((' ' | '\t')=> SPACE_TAB |)
               (
@@ -49,7 +49,7 @@ TAG
               ("-->")?
               | ~'-' (~('\n' | '>'))*
           )
-      | { (util.serverSideIncludesAllowed()) }? '%' <asp_start> // Only scan server side instructions when allowed to.
+      | { (!ignoreServerSide) }? '%' <asp_start> // Only scan server side instructions when allowed to.
       |
       (
           n:NAME 

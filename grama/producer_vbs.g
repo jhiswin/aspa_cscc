@@ -33,7 +33,6 @@ options {
 generate
 	:
 	(HTML <html>
-	| SCRIPT <script>
 	| (<script_begin> statements <script_end>))*
 	;
 
