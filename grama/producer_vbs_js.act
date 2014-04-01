@@ -89,7 +89,7 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
 @ge : { out.print(" >= "); }
 @eq : { out.print(" == "); }
 @assign : { out.print(" = "); }
-@cassign : { out.print(" += "); }
+@cassign : { out.print(" += '' + "); }
 @passign : { out.print(" += "); }
 @minassign : { out.print(" -= "); }
 @modassign : { out.print(" %= "); }
@@ -97,7 +97,7 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
 @dassign : { out.print(" /= "); }
 @neq : { out.print(" != "); }
 @is : { out.print(" == "); }
-@concat : { out.print(" + "); }
+@concat : { out.print(" + '' + "); }
 @plus : { out.print(" + "); }
 @minus : { out.print(" - "); }
 @mod : { out.print(" % "); }
@@ -242,7 +242,7 @@ out.print("strtotime(\"" + #DDATE.getText() + "\"");
     } else {
         firstArg = false;
     }
-    out.print("&" + #BYREF.getText());
+    out.print("/* TODO ByRef fix this */&" + #BYREF.getText());
 }
 @arg_id : {
     if (!firstArg) {

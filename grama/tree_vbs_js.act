@@ -1082,6 +1082,7 @@ typeStack.push(new Integer(DINT));
 @arg_empty : {
     List[] arguments = (List[]) argStack.peek();
     arguments[0].add(#[EMPTYARG]);
+	//TODO this is not entirely correct, vbs passes an error object
 	arguments[1].add(new Integer(0));
 	typeStack.clear();
 }
