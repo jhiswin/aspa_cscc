@@ -136,10 +136,9 @@
         </ast>
 		-->
 		<arg type="DSTRING" />
-		<ast name="METHOD_CALL" text="parseInt">
+		<ast name="METHOD_CALL" text="gaussianRound">
 			<ast name="ARGLIST_VALUES">
 				<arg index="1" />
-				<ast name="DINT" text="10"/>
 			</ast>
 		</ast>
     </method>
@@ -192,10 +191,10 @@
     </method>
 
     <method name="date" type="DINT">
-        <ast name="METHOD_CALL" text="time" />
+        <ast name="METHOD_CALL" text="Date" />
     </method>
 
-    <method name="DateAdd"  type="DINT" requires="translator/runtime.php">
+    <method name="DateAdd"  type="DINT" requires="translator/vbsruntime.js">
 	  <arg type="DSTRING" />
 	  <arg type="DINT" />
 	  <arg type="DINT" /> <!-- This is the date arg-->
@@ -203,7 +202,7 @@
 		   It is easier to implement this in PHP instead of bulding
 		   the code every time
 	  -->
-	  <ast name="METHOD_CALL" text="dateAdd">
+	  <ast name="METHOD_CALL" text="Date.DateAdd">
 		<ast name="ARGLIST_VALUES">
 		  <arg index="1" />
 		  <arg index="2" />
@@ -212,69 +211,69 @@
 	  </ast>
 	</method>
 
-    <method name="DateDiff" type="DINT" requires="translator/runtime.php">
+    <method name="DateDiff" type="DINT" requires="translator/vbsruntime.js">
 	  <arg type="DSTRING" />
 	  <arg type="DINT" /> <!-- The first date arg -->
 	  <arg type="DINT" /> <!-- The second date arg -->
-	  <ast name="METHOD_CALL" text="dateDiff">
+	  <ast name="METHOD_CALL" text="Date.DateDiff">
 		<ast name="ARGLIST_VALUES">
 		  <args />
 		</ast>
 	  </ast>
 	</method>
 
-    <method name="DateDiff" type="DINT" requires="translator/runtime.php">
+    <method name="DateDiff" type="DINT" requires="translator/vbsruntime.js">
 	  <arg type="DSTRING" />
 	  <arg type="DINT" /> <!-- The first date arg -->
 	  <arg type="DINT" /> <!-- The second date arg -->
 	  <arg type="DINT" /> <!-- First day of week constant -->
-	  <ast name="METHOD_CALL" text="dateDiff">
+	  <ast name="METHOD_CALL" text="Date.DateDiff">
 		<ast name="ARGLIST_VALUES">
 		  <args />
 		</ast>
 	  </ast>
 	</method>
 
-    <method name="DateDiff" type="DINT" requires="translator/runtime.php">
+    <method name="DateDiff" type="DINT" requires="translator/vbsruntime.js">
 	  <arg type="DSTRING" />
 	  <arg type="DINT" /> <!-- The first date arg -->
 	  <arg type="DINT" /> <!-- The second date arg -->
 	  <arg type="DINT" /> <!-- First day of week constant -->
 	  <arg type="DINT" /> <!-- First week of year constant -->
-	  <ast name="METHOD_CALL" text="dateDiff">
+	  <ast name="METHOD_CALL" text="Date.DateDiff">
 		<ast name="ARGLIST_VALUES">
 		  <args />
 		</ast>
 	  </ast>
 	</method>
 
-    <method name="DatePart" type="DINT" requires="translator/runtime.php">
+    <method name="DatePart" type="DINT" requires="translator/vbsruntime.js">
 	  <arg type="DSTRING" />
 	  <arg type="DINT" /> <!-- The date arg -->
-	  <ast name="METHOD_CALL" text="datePart">
+	  <ast name="METHOD_CALL" text="Date.DatePart">
 		<ast name="ARGLIST_VALUES">
 		  <args />
 		</ast>
 	  </ast>
 	</method>
 
-    <method name="DatePart" type="DINT" requires="translator/runtime.php">
+    <method name="DatePart" type="DINT" requires="translator/vbsruntime.js">
 	  <arg type="DSTRING" />
 	  <arg type="DINT" /> <!-- The date arg -->
 	  <arg type="DINT" /> <!-- First day of week constant -->
-	  <ast name="METHOD_CALL" text="datePart">
+	  <ast name="METHOD_CALL" text="Date.DatePart">
 		<ast name="ARGLIST_VALUES">
 		  <args />
 		</ast>
 	  </ast>
 	</method>
 
-    <method name="DatePart" type="DINT" requires="translator/runtime.php">
+    <method name="DatePart" type="DINT" requires="translator/vbsruntime.js">
 	  <arg type="DSTRING" />
 	  <arg type="DINT" /> <!-- The date arg -->
 	  <arg type="DINT" /> <!-- First day of week constant -->
 	  <arg type="DINT" /> <!-- First week of year constant -->
-	  <ast name="METHOD_CALL" text="datePart">
+	  <ast name="METHOD_CALL" text="Date.DatePart">
 		<ast name="ARGLIST_VALUES">
 		  <args />
 		</ast>
@@ -297,9 +296,9 @@
         </ast>
     </method>
 
-    <method name="DateValue" type="DINT" requires="translator/runtime.php">
+    <method name="DateValue" type="DINT" requires="translator/vbsruntime.js">
 	  <arg type="DINT" />
-	  <ast name="METHOD_CALL" text="dateValue">
+	  <ast name="METHOD_CALL" text="Date.DateValue">
 		<ast name="ARGLIST_VALUES">
 		  <arg index="1" />
 		</ast>
@@ -357,20 +356,20 @@
 	  </ast>
 	</method>
 
-    <method name="FormatDateTime" type="DSTRING" requires="translator/runtime.php">
+    <method name="FormatDateTime" type="DSTRING" requires="translator/vbsruntime.js">
 	  <arg type="DINT" />
 	  <!--  Format the date using the vbGeneralDate -->
-	  <ast name="METHOD_CALL" text="formatDateTime">
+	  <ast name="METHOD_CALL" text="Date.FormatDateTime">
 		<ast name="ARGLIST_VALUES">
 		  <args />
 		</ast>
 	  </ast>
 	</method>
 
-    <method name="FormatDateTime" type="DSTRING" requires="translator/runtime.php">
+    <method name="FormatDateTime" type="DSTRING" requires="translator/vbsruntime.js">
 	  <arg type="DINT" />
 	  <arg type="DINT" /> <!-- Use the constant as the format --> 
-	  <ast name="METHOD_CALL" text="formatDateTime">
+	  <ast name="METHOD_CALL" text="Date.FormatDateTime">
 		<ast name="ARGLIST_VALUES">
 		  <args />
 		</ast>
