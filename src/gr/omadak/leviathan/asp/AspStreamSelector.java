@@ -410,7 +410,7 @@ public class AspStreamSelector extends TokenStreamSelector {
         //make an attempt to determine default language
         if (findLang) {
             Token first = getNextToken();
-            storedTokens.add(first);
+            storedTokens.addFirst(first);
         }
     }
 
