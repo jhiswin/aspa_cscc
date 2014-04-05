@@ -80,6 +80,18 @@
 			</ast>
 		</ast>
 	</method>
+	
+  	<method name="loadXML" type="VOID">
+		<arg type="DSTRING"/>
+		<ast name="DOT">
+			<this />
+			<ast name="METHOD_CALL" text="loadXML">
+				<ast name="ARGLIST_VALUES">
+					<arg index="1" />
+				</ast>
+			</ast>
+		</ast>
+	</method>
 </class>
 
 	
