@@ -185,9 +185,11 @@
 
     <method name="cstr" type="DSTRING">
         <arg type="DSTRING" />
-        <ast name="CAST" text="string">
-            <arg index="1" />
-        </ast>
+		<ast name="METHOD_CALL" text="String">
+			<ast name="ARGLIST_VALUES">
+				<arg index="1" />
+			</ast>
+		</ast>
     </method>
 
     <method name="date" type="DINT">
